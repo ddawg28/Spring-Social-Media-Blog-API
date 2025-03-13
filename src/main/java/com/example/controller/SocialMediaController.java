@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.entity.*;
 import com.example.service.*;
@@ -12,16 +13,13 @@ import com.example.service.*;
  */
 @RestController
 public class SocialMediaController {
+    @Autowired
     AccountService accountService;
+    @Autowired
     MessageService messageService;
-
-    SocialMediaController(AccountService accountService, MessageService messageService) {
-        this.accountService = accountService;
-        this.messageService = messageService;
-    }
 
     @PostMapping("/register")
     public void createAccount(@RequestBody Account account) {
-        
+        accountService.test();
     }
 }
