@@ -41,4 +41,14 @@ public class SocialMediaController {
         }
         return ResponseEntity.ok().body(result);
     }
+
+    @PostMapping("/messages")
+    public @ResponseBody ResponseEntity<Message> createMessage(@RequestBody Message message) {
+        Message result = messageService.createMessage(message);
+        if (result == null) {
+            return ResponseEntity.status(400).build();
+        }
+
+        return ResponseEntity.status(200).body(result);
+    }
 }
