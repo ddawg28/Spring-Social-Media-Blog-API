@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.entity.*;
 import com.example.service.*;
+import java.util.List;
+
+import javax.websocket.server.PathParam;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
@@ -51,4 +54,17 @@ public class SocialMediaController {
 
         return ResponseEntity.status(200).body(result);
     }
+
+    @GetMapping("/messages")
+    public @ResponseBody ResponseEntity<List<Message>> getAllMessages() {
+        List<Message> result = messageService.getAllMessages();
+        return ResponseEntity.status(200).body(result);
+    }
+
+    @GetMapping("/messages/{messageId}")
+    public @ResponseBody ResponseEntity<Message> getMessage(@PathVariable Integer messageId) {
+        Message result = messageService.getMessage(messageId);
+        return ResponseEntity.status(200).body(result);
+    }
+
 }
