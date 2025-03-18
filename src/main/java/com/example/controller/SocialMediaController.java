@@ -1,6 +1,8 @@
 package com.example.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.entity.*;
 import com.example.service.*;
@@ -19,7 +21,15 @@ public class SocialMediaController {
     MessageService messageService;
 
     @PostMapping("/register")
-    public void createAccount(@RequestBody Account account) {
-        accountService.test();
+    public @ResponseBody ResponseEntity<Account> registerUser(@RequestBody Account account) {
+        if (accountService.findAccount(account) == true) {
+            return ResponseEntity.status(409).build();
+        }
+        Account res = accountService.createAccount(account);
+        if (res != null) {
+            return ResponseEntity.status(200).body(account);
+        }
+        
+        return ResponseEntity.status(400).build();
     }
 }
