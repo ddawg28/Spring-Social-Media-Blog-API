@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import com.example.entity.*;
 import com.example.service.*;
+
+import java.security.DrbgParameters.Reseed;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -67,4 +70,29 @@ public class SocialMediaController {
         return ResponseEntity.status(200).body(result);
     }
 
+    @DeleteMapping("/messages/{messageId}")
+    public @ResponseBody ResponseEntity<Integer> deleteMessage(@PathVariable Integer messageId) {
+        Integer result = messageService.deleteMessage(messageId);
+        if (result == 1) {
+            return ResponseEntity.status(200).body(result);
+        }
+
+        return ResponseEntity.status(200).build();
+    }
+
+    @PatchMapping("/messages/{messageId}")
+    public @ResponseBody ResponseEntity<Integer> updateMessage(@RequestBody Message messageText, @PathVariable Integer messageId) {
+        Integer result = messageService.updateMessage(messageText.getMessageText(), messageId);
+        if (result == 1) {
+            return ResponseEntity.status(200).body(result);
+        }
+
+        return ResponseEntity.status(400).build();
+    }
+
+    @GetMapping("/accounts/{accountId}/messages")
+    public @ResponseBody ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable Integer accountId) {
+        List<Message> result = messageService.getAllMessagesByUser(accountId);
+        return ResponseEntity.status(200).body(result);
+    }
 }

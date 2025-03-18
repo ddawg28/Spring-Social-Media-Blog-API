@@ -40,4 +40,33 @@ public class MessageService {
         }
         return null;
     }
+
+    public Integer deleteMessage(Integer id) {
+        if (messageRepository.findById(id).isPresent()) {
+            messageRepository.deleteById(id);
+            return 1;
+        }
+        return 0;
+    }
+    
+    public Integer updateMessage(String text, Integer id) {
+        if (text.isBlank()) {
+            return 0;
+        }
+        if (text.length() > 255) {
+            return 0;
+        }
+        Optional<Message> msg = messageRepository.findById(id);
+        if (msg.isPresent()) {
+            Message newMsg = msg.get();
+            newMsg.setMessageText(text);
+            messageRepository.save(newMsg);
+            return 1;
+        }
+        return 0;
+    }
+
+    public List<Message> getAllMessagesByUser(Integer id) {
+        return messageRepository.findAllByPostedBy(id);
+    }
 }
